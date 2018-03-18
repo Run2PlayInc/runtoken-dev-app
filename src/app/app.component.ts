@@ -1,6 +1,6 @@
 import { Component, HostListener, NgZone } from '@angular/core';
 
-import {Web3Service, MetaCoinService} from '../services/services'
+import {Web3Service, RunTokenService} from '../services/services'
 
 import { canBeNumber } from '../util/validation';
 
@@ -17,6 +17,7 @@ export class AppComponent {
   accounts: any;
 
   balance: number;
+  ethBalance: number;
   sendingAmount: number;
   recipientAddress: string;
   status: string;
@@ -25,7 +26,7 @@ export class AppComponent {
   constructor(
     private _ngZone: NgZone,
     private web3Service: Web3Service,
-    private metaCoinService: MetaCoinService,
+    private runTokenService: RunTokenService,
     ) {
     this.onReady();
   }
@@ -36,6 +37,9 @@ export class AppComponent {
     this.web3Service.getAccounts().subscribe(accs => {
       this.accounts = accs;
       this.account = this.accounts[0];
+      this.ethBalance = web3.eth.getBalance(this.account);
+      console.log(accs);
+      console.log("Balance: " + this.ethBalance);
 
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
@@ -43,10 +47,12 @@ export class AppComponent {
         this.refreshBalance()
       );
     }, err => alert(err))
+
+
   };
 
   refreshBalance = () => {
-    this.metaCoinService.getBalance(this.account)
+    this.runTokenService.getBalance(this.account)
       .subscribe(value => {
         this.balance = value
       }, e => {this.setStatus('Error getting balance; see log.')})
@@ -59,7 +65,7 @@ export class AppComponent {
   sendCoin = () => {
     this.setStatus('Initiating transaction... (please wait)');
 
-    this.metaCoinService.sendCoin(this.account, this.recipientAddress, this.sendingAmount)
+    this.runTokenService.sendToken(this.account, this.recipientAddress, this.sendingAmount)
       .subscribe(() =>{
         this.setStatus('Transaction complete!');
         this.refreshBalance();

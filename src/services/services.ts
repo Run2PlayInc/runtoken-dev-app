@@ -1,8 +1,8 @@
-import {MetaCoinService} from './meta-coin.service'
+import {RunTokenService} from './runtoken.service'
 import {Web3Service} from './web3.service'
 
 
 export {
-    MetaCoinService,
+    RunTokenService,
     Web3Service,
 };

@@ -3,31 +3,31 @@ import { Observable } from 'rxjs/Observable';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { Web3Service } from './web3.service'
 
-const metaincoinArtifacts = require('../../build/contracts/MetaCoin.json');
+const runtokenArtifacts = require('../../build/contracts/RunToken.json');
 const contract = require('truffle-contract');
 
 @Injectable()
-export class MetaCoinService {
+export class RunTokenService {
 
-	MetaCoin = contract(metaincoinArtifacts);
+	RunToken = contract(runtokenArtifacts);
 
   constructor(
   	private web3Ser: Web3Service,
-  	) { 
+  	) {
   	// Bootstrap the MetaCoin abstraction for Use
-  	this.MetaCoin.setProvider(web3Ser.web3.currentProvider);
+  	this.RunToken.setProvider(web3Ser.web3.currentProvider);
   }
 
   getBalance(account): Observable<number> {
-  	let meta;
+  	let run;
 
   	return Observable.create(observer => {
-  		this.MetaCoin
+  		this.RunToken
   		  .deployed()
   		  .then(instance => {
-  		    meta = instance;
+  		    run = instance;
           //we use call here so the call doesn't try and write, making it free
-  		    return meta.getBalance.call(account, {
+  		    return run.balanceOf.call(account, {
   		      from: account
   		    });
   		  })
@@ -42,15 +42,15 @@ export class MetaCoinService {
   	})
   }
 
-  sendCoin(from, to, amount): Observable<any>{
+  sendToken(from, to, amount): Observable<any>{
+  	let run;
 
-  	let meta;
   	return Observable.create(observer => {
-  	  this.MetaCoin
+  	  this.RunToken
   	    .deployed()
   	    .then(instance => {
-  	      meta = instance;
-  	      return meta.sendCoin(to, amount, {
+  	      run = instance;
+  	      return run.transfer(to, amount, {
   	        from: from
   	      });
   	    })

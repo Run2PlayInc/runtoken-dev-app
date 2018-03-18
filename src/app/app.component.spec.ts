@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
-import { Web3Service, MetaCoinService} from '../services/services'
+import { Web3Service, RunTokenService} from '../services/services'
 
 
 describe('AppComponent', () => {

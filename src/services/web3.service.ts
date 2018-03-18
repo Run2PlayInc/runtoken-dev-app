@@ -14,7 +14,7 @@ export class Web3Service {
 
 	public web3: any;
 
-  constructor() { 
+  constructor() {
   	this.checkAndInstantiateWeb3();
   }
 
@@ -52,6 +52,9 @@ export class Web3Service {
   	    observer.complete()
   	  });
   	})
-  }
+  },
+	getBalance: () => {
+
+	}
 
 }
