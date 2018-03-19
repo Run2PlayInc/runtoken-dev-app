@@ -1,0 +1,8 @@
+{
+  "wallets":{
+    "privateSaleWallet":"0x4140e280fda3c07a819348c6e37de412f323b0b9",
+    "teamPoolWallet": "0xf30bd8d80321b2b7631a7be9743e6713352a965a",
+    "whitelistSaleWallet": "0x82b8d2c7bc20325c6865974de84bcfca935ddf4f",
+    "preAndPublicSaleWallet": "0x9634fb50693502526f98e1b3f308326f5b356e6f"
+  }
+}
