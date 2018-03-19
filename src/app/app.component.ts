@@ -18,6 +18,7 @@ export class AppComponent {
 
   balance: number;
   unreleasedBalance: number;
+  allRunBalance: number;
   ethBalance: number;
   sendingAmount: number;
   recipientAddress: string;
@@ -62,6 +63,13 @@ export class AppComponent {
       .subscribe(value => {
         console.log('unreleased balance: ' + value);
         this.unreleasedBalance = value
+      }, e => {this.setStatus('Error getting unreleased balance; see log')});
+
+    // Get Unreleased Balance
+    this.runTokenService.getTotalRunBalance(this.account)
+      .subscribe(value => {
+        console.log('All run balance balance: ' + value);
+        this.allRunBalance = value
       }, e => {this.setStatus('Error getting unreleased balance; see log')});
 
     // Get ETH Balance

@@ -49,7 +49,6 @@ export class RunTokenService {
 
   sendCoin(from, to, amount): Observable<any> {
     let run;
-    console.log('sendCoin');
 
     return Observable.create(observer => {
       this.RunToken
@@ -75,7 +74,6 @@ export class RunTokenService {
     let vester;
 
     return Observable.create(observer => {
-      console.log('releaseGrant');
       this.PrivateSaleVester
         .deployed()
         .then(instance => {
@@ -99,14 +97,36 @@ export class RunTokenService {
     let vester;
 
     return Observable.create(observer => {
-      console.log('getUnreleasedBalance');
-
-
       this.PrivateSaleVester
         .deployed()
         .then(instance => {
           vester = instance;
-          return vester.getBalanceVesting(this.tokenAddress, this.privateCrowdSaleAddress, from)
+          return vester.getBalanceVesting(this.tokenAddress, this.privateCrowdSaleAddress, from,{
+            from: from
+          });
+        })
+        .then(value => {
+          observer.next(value/1e18)
+          observer.complete()
+        })
+        .catch(e => {
+          console.log(e);
+          observer.error(e);
+        })
+    })
+  }
+
+  getTotalRunBalance(from): Observable<any> {
+    let vester;
+
+    return Observable.create(observer => {
+      this.PrivateSaleVester
+        .deployed()
+        .then(instance => {
+          vester = instance;
+          return vester.getBalance(this.tokenAddress, from, {
+            from: from
+          });
         })
         .then(value => {
           observer.next(value/1e18)
